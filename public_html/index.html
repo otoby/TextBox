@@ -12,6 +12,7 @@
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/textbox.css">
         <style>
             body {
                 padding-top: 50px;
@@ -52,10 +53,33 @@
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-md-4">
+                    <form>
+                        <div class="form-group">
+                            <textarea id="textarea-one" data-mark-down="true" class="form-control">
+                                I am *textarea one*
+
+                            </textarea>
+                        </div>
+                    </form>
                 </div>
                 <div class="col-md-4">
+                    <form>
+                        <div class="form-group">
+                            <textarea id="textarea-two" data-mark-down="true" class="form-control">
+                                I am **textarea two**
+
+                            </textarea>
+                        </div>
+                    </form>
                 </div>
                 <div class="col-md-4">
+                    <form>
+                        <div class="form-group">
+                            <textarea id="textarea-three" data-mark-down="true" class="form-control">
+                                I am [[Textarea three]](https://www.google.com)
+                            </textarea>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -70,6 +94,7 @@
 
         <script src="js/vendor/bootstrap.min.js"></script>
 
+        <script src="js/textbox.js"></script>
         <script src="js/main.js"></script>
 
     </body>
