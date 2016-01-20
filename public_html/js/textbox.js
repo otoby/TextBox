@@ -22,6 +22,8 @@
         if (this.settings && typeof this.settings[notification] === 'function') {
             this.settings[notification]();
         }
+
+        return this;
     };
 
     TextBox.prototype.refresh = function(state) {
@@ -32,6 +34,8 @@
                 this.Features[feature](this, state);
             }
         }
+
+        return this;
     };
 
     TextBox.prototype.edit = function() {
@@ -39,6 +43,8 @@
             var markDown = this.Features.markDown(this, this.state.IDLE);
             markDown.showText();
         }
+
+        return this;
     };
 
     TextBox.prototype.preview = function() {
@@ -46,6 +52,8 @@
             var markDown = this.Features.markDown(this, this.state.IDLE);
             markDown.showPreview();
         }
+
+        return this;
     };
 
     TextBox.prototype.inPreview = function() {
@@ -89,11 +97,11 @@
                         that.$preview.html('').css('');
                     }
                 } else {
-                window.setTimeout(function() {
-                    that.$text.show();
-                    resize();
-                    that.$text.blur();
-                }, 0);
+                    window.setTimeout(function() {
+                        that.$text.show();
+                        resize();
+                        that.$text.blur();
+                    }, 0);
                 }
 
             }
