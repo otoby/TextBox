@@ -122,7 +122,7 @@
                 if (!selection) {
                     that.isPreview = false;
                     that.$text.removeClass('text-box-hide').focus().keydown().select();
-                    that.$preview.hide();
+                    that.$preview.addClass('text-box-hide'); // Hide
                     that.notify('edit');
                 }
             }
@@ -131,7 +131,7 @@
                 var html = util.textToMarkDownHtml(that.$text.val());
                 var value = util.nl2br(html);
                 that.isPreview = true;
-                that.$preview.show();
+                that.$preview.removeClass('text-box-hide'); //Show
                 that.$preview.html(value);
                 that.$text.addClass('text-box-hide');
                 that.notify('preview');
