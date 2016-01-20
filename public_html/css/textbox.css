@@ -53,6 +53,16 @@
     border-bottom:solid 30px transparent;
 }
 
+.text-box .text-box-hide,
+.text-box .text-box-hide:focus,
+.text-box .text-box-hide:active,
+.text-box .text-box-hide:hover {
+    padding: 0;
+    border: 0;
+    height: 0 !important;
+    min-height: 0;
+}
+
 .inplace-preview {
     cursor: pointer;
 }

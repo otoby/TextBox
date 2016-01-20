@@ -121,7 +121,7 @@
                 var selection = getSelection().toString();
                 if (!selection) {
                     that.isPreview = false;
-                    that.$text.show().focus().keydown().select();
+                    that.$text.removeClass('text-box-hide').focus().keydown().select();
                     that.$preview.hide();
                     that.notify('edit');
                 }
@@ -133,7 +133,7 @@
                 that.isPreview = true;
                 that.$preview.show();
                 that.$preview.html(value);
-                that.$text.hide();
+                that.$text.addClass('text-box-hide');
                 that.notify('preview');
             }
 
@@ -167,6 +167,7 @@
                         .on('click', showText);
 
                 that.$textBox.on('focusout', delayedShowPreview);
+
                 showPreview();
             }
 
