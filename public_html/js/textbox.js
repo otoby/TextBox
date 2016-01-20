@@ -84,11 +84,17 @@
 
             } else if (state === ctx.state.REFRESH) {
 
+                if ($.trim(that.$text.val()) === '') {
+                    if (that.$preview) {
+                        that.$preview.html('').css('');
+                    }
+                } else {
                 window.setTimeout(function() {
                     that.$text.show();
                     resize();
                     that.$text.blur();
                 }, 0);
+                }
 
             }
 
