@@ -1,20 +1,31 @@
 .text-box-container {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
     background-color: #fff;
-    border-radius: 3px;
-    border: 1px solid #DFEFFF;
+    border-radius: 4px;
+    border: 1px solid #CCC;
+    
+    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;    
 }
 
 .text-box-container:hover,
 .text-box-container:focus,
 .text-box-container:active {
-    border-color: #4285f4;
+    border-color: #66AFE9;
+
+    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);      
 }
 
 .has-error .text-box-container,
 .has-error .text-box-container:hover,
 .has-error .text-box-container:active,
 .has-error .text-box-container:focus {
-    border-color: #843534;
+    border-color: #A94442;
 }
 
 .has-error .text-box-container .form-control {
