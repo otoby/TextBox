@@ -71,12 +71,6 @@
             var that = ctx;
 
             function resize() {
-                var styleHeight = parseInt(that.text.style.height, 10);
-                var currentHeight = that.text.scrollHeight + 30;
-
-                if (styleHeight === currentHeight) {
-                    return;
-                }
 
                 that.text.style.height = 'auto';
                 var textHeight = that.text.scrollHeight + 30;
