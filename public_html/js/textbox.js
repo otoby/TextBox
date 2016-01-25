@@ -81,7 +81,7 @@
                 }
             }
 
-            function delayedResize(e) {
+            function _delayedResize(e) {
                 var keycode = e.keyCode;
 
                 var isPrintable =
@@ -102,7 +102,7 @@
 
             if (state === ctx.state.INIT) {
 
-                that.$text.on('keydown', delayedResize);
+                that.$text.on('keydown', _delayedResize);
                 resize();
 
             } else if (state === ctx.state.REFRESH) {
@@ -122,8 +122,7 @@
             }
 
             return {
-                resize: resize,
-                delayedResize: delayedResize
+                resize: resize
             };
 
         },
