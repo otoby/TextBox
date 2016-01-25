@@ -69,11 +69,50 @@
     TextBox.prototype.Features = {
         autoGrow: function(ctx, state) {
             var that = ctx;
+            var plusHeight = 30; // This is the default TextBox border-bottom for control
+            var mirror;
+
+            function _createTextAreaMirror($textarea) {
+                $textarea.after('<div class="textbox-textarea-mirror"></div>');
+                mirror = $textarea.next('.textbox-textarea-mirror')[0];
+
+                mirror.style.display = 'none';
+                mirror.style.wordWrap = 'break-word';
+                mirror.style.whiteSpace = 'normal';
+                mirror.style.padding = $textarea.css('paddingTop') + ' ' +
+                        $textarea.css('paddingRight') + ' ' +
+                        $textarea.css('paddingBottom') + ' ' +
+                        $textarea.css('paddingLeft');
+
+                mirror.style.width = $textarea.css('width');
+                mirror.style.fontFamily = $textarea.css('font-family');
+                mirror.style.fontSize = $textarea.css('font-size');
+                mirror.style.lineHeight = $textarea.css('line-height');
+
+                plusHeight += parseInt($textarea.css('paddingTop'), 10) +
+                        parseInt($textarea.css('paddingBottom'), 10) +
+                        parseInt($textarea.css('margin-bottom'), 10);
+            }
+
+            function _getHeight($textarea) {
+                mirror.innerHTML = String($textarea.val())
+                        .replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/ /g, '&nbsp;')
+                        .replace(/\n/g, '<br />');
+
+                if ($textarea.height() !== $(mirror).height() + plusHeight) {
+                    return $(mirror).height() + plusHeight;
+                } else {
+                    return $textarea.height();
+                }
+            }
 
             function resize() {
-
-                that.text.style.height = 'auto';
-                var textHeight = that.text.scrollHeight + 30;
+                var textHeight = _getHeight(that.$text);
                 that.text.style.height = textHeight + 'px';
 
                 if (that.$preview) {
@@ -101,6 +140,7 @@
             }
 
             if (state === ctx.state.INIT) {
+                _createTextAreaMirror();
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
