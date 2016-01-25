@@ -70,27 +70,35 @@
         autoGrow: function(ctx, state) {
             var that = ctx;
             var plusHeight = 30; // This is the default Textarea border-bottom for control
+            var cssMinHeight = 0;
             var mirror;
 
             function _createTextAreaMirror($textarea) {
-                $textarea.after('<div class="textbox-textarea-mirror"></div>');
-                mirror = $textarea.next('.textbox-textarea-mirror')[0];
 
-                mirror.style.display = 'none';
-                mirror.style.wordWrap = 'break-word';
-                mirror.style.whiteSpace = 'normal';
-                mirror.style.padding = $textarea.css('paddingTop') + ' ' +
-                        $textarea.css('paddingRight') + ' ' +
-                        $textarea.css('paddingBottom') + ' ' +
-                        $textarea.css('paddingLeft');
+                if ($textarea.next('.textbox-textarea-mirror').length > 0) {
+                    mirror = $textarea.next('.textbox-textarea-mirror')[0];
+                } else {
+                    $textarea.after('<div class="textbox-textarea-mirror"></div>');
+                    mirror = $textarea.next('.textbox-textarea-mirror')[0];
 
-                mirror.style.width = $textarea.css('width');
-                mirror.style.fontFamily = $textarea.css('font-family');
-                mirror.style.fontSize = $textarea.css('font-size');
-                mirror.style.lineHeight = $textarea.css('line-height');
+                    mirror.style.display = 'none';
+                    mirror.style.wordWrap = 'break-word';
+                    mirror.style.whiteSpace = 'normal';
+                    mirror.style.padding = $textarea.css('paddingTop') + ' ' +
+                            $textarea.css('paddingRight') + ' ' +
+                            $textarea.css('paddingBottom') + ' ' +
+                            $textarea.css('paddingLeft');
+
+                    mirror.style.width = $textarea.css('width');
+                    mirror.style.fontFamily = $textarea.css('font-family');
+                    mirror.style.fontSize = $textarea.css('font-size');
+                    mirror.style.lineHeight = $textarea.css('line-height');
+                }
 
                 plusHeight += parseInt($textarea.css('paddingTop'), 10) +
                         parseInt($textarea.css('paddingBottom'), 10);
+
+                cssMinHeight += parseInt($textarea.css('min-height'), 10);
             }
 
             function _getHeight($textarea) {
@@ -103,19 +111,23 @@
                         .replace(/ /g, '&nbsp;')
                         .replace(/\n/g, '<br />') + '<br />';
 
-                if ($textarea.height() !== $(mirror).height() + plusHeight) {
-                    return $(mirror).height() + plusHeight;
+                var mirrorHeight = $(mirror).height();
+
+                if (mirrorHeight < (cssMinHeight - plusHeight)) {
+                    return cssMinHeight;
+                } else if ($textarea.height() !== mirrorHeight) {
+                    return mirrorHeight + plusHeight;
                 } else {
-                    return $textarea.height();
+                    return $textarea.height() + plusHeight;
                 }
             }
 
             function resize() {
-                var textHeight = _getHeight(that.$text);
-                that.text.style.height = textHeight + 'px';
+                var height = _getHeight(that.$text);
+                that.text.style.height = height + 'px';
 
                 if (that.$preview) {
-                    that.$preview[0].style.minHeight = textHeight + 'px';
+                    that.$preview[0].style.minHeight = height + 'px';
                 }
             }
 
@@ -139,24 +151,25 @@
             }
 
             if (state === ctx.state.INIT) {
-                _createTextAreaMirror();
+
+                _createTextAreaMirror(that.$text);
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
 
             } else if (state === ctx.state.REFRESH) {
 
-                if ($.trim(that.$text.val()) === '') {
-                    if (that.$preview) {
-                        that.$preview.html('').css('');
-                    }
-                } else {
-                    window.setTimeout(function() {
-                        that.$text.show();
+                window.setTimeout(function() {
+                    if (that.$text.hasClass('text-box-hide')) {
+                        that.$text.removeClass('text-box-hide');
+                        _createTextAreaMirror(that.$text);
                         resize();
-                        that.$text.blur();
-                    }, 0);
-                }
+                        that.$text.addClass('text-box-hide');
+                    } else {
+                        _createTextAreaMirror(that.$text);
+                        resize();
+                    }
+                }, 0);
 
             }
 
