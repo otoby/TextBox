@@ -81,7 +81,22 @@
                 }
             }
 
-            function delayedResize() {
+            function delayedResize(e) {
+                var keycode = e.keyCode;
+
+                var isPrintable =
+                        (keycode > 47 && keycode < 58) || // Number keys
+                        keycode === 32 || keycode === 13 || // Spacebar & return key(s) (if you want to allow carriage returns)
+                        (keycode > 64 && keycode < 91) || // Letter keys
+                        (keycode > 95 && keycode < 112) || // Numpad keys
+                        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+                        (keycode > 218 && keycode < 223) || // [\]' (in order)
+                        keycode === 8 || keycode === 46; // Backspace and Del
+
+                if (!isPrintable) {
+                    return;
+                }
+
                 window.setTimeout(resize, 0);
             }
 
