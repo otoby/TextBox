@@ -13,7 +13,9 @@
         markDown: false,
         onEdit: null,
         onPreview: null,
-        content: '<div class="text-box-container"><div class="text-box"><div class="text-box-options"></div></div></div>'
+        content: '<div class="text-box-container"><div class="text-box"><div class="text-box-options"></div></div></div>',
+        hideClass: 'text-box-hide',
+        mirrorClass: 'text-box-textarea-mirror'
     };
 
     TextBox.prototype.notify = function(name) {
@@ -67,19 +69,18 @@
     };
 
     TextBox.prototype.Features = {
-        autoGrow: function(ctx, state) {
-            var that = ctx;
+        autoGrow: function(that, state) {
             var plusHeight = 30; // This is the default Textarea border-bottom for control
             var cssMinHeight = 0;
             var mirror;
 
             function _createTextAreaMirror($textarea) {
 
-                if ($textarea.next('.textbox-textarea-mirror').length > 0) {
-                    mirror = $textarea.next('.textbox-textarea-mirror')[0];
+                if ($textarea.next(that.settings.mirrorClass).length > 0) {
+                    mirror = $textarea.next(that.settings.mirrorClass)[0];
                 } else {
-                    $textarea.after('<div class="textbox-textarea-mirror"></div>');
-                    mirror = $textarea.next('.textbox-textarea-mirror')[0];
+                    $textarea.after('<div class="' + that.settings.mirrorClass + '"></div>');
+                    mirror = $textarea.next('.' + that.settings.mirrorClass)[0];
 
                     mirror.style.display = 'none';
                     mirror.style.wordWrap = 'break-word';
@@ -150,21 +151,21 @@
                 window.setTimeout(resize, 0);
             }
 
-            if (state === ctx.state.INIT) {
+            if (state === that.state.INIT) {
 
                 _createTextAreaMirror(that.$text);
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
 
-            } else if (state === ctx.state.REFRESH) {
+            } else if (state === that.state.REFRESH) {
 
                 window.setTimeout(function() {
-                    if (that.$text.hasClass('text-box-hide')) {
-                        that.$text.removeClass('text-box-hide');
+                    if (that.$text.hasClass(that.settings.hideClass)) {
+                        that.$text.removeClass(that.settings.hideClass);
                         _createTextAreaMirror(that.$text);
                         resize();
-                        that.$text.addClass('text-box-hide');
+                        that.$text.addClass(that.settings.hideClass);
                     } else {
                         _createTextAreaMirror(that.$text);
                         resize();
@@ -178,17 +179,16 @@
             };
 
         },
-        markDown: function(ctx, state) {
+        markDown: function(that, state) {
 
-            var that = ctx;
             var util = that.Util;
 
             function showText() {
                 var selection = getSelection().toString();
                 if (!selection) {
                     that.isPreview = false;
-                    that.$text.removeClass('text-box-hide').focus().keydown().select();
-                    that.$preview.addClass('text-box-hide'); // Hide
+                    that.$text.removeClass(that.settings.hideClass).focus().keydown().select();
+                    that.$preview.addClass(that.settings.hideClass); // Hide
                     that.notify('edit');
                 }
             }
@@ -197,9 +197,9 @@
                 var html = util.textToMarkDownHtml(that.$text.val());
                 var value = util.nl2br(html);
                 that.isPreview = true;
-                that.$preview.removeClass('text-box-hide'); //Show
+                that.$preview.removeClass(that.settings.hideClass); //Show
                 that.$preview.html(value);
-                that.$text.addClass('text-box-hide');
+                that.$text.addClass(that.settings.hideClass);
                 that.notify('preview');
             }
 
