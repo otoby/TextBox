@@ -69,7 +69,7 @@
     TextBox.prototype.Features = {
         autoGrow: function(ctx, state) {
             var that = ctx;
-            var plusHeight = 30; // This is the default TextBox border-bottom for control
+            var plusHeight = 30; // This is the default Textarea border-bottom for control
             var mirror;
 
             function _createTextAreaMirror($textarea) {
@@ -90,8 +90,7 @@
                 mirror.style.lineHeight = $textarea.css('line-height');
 
                 plusHeight += parseInt($textarea.css('paddingTop'), 10) +
-                        parseInt($textarea.css('paddingBottom'), 10) +
-                        parseInt($textarea.css('margin-bottom'), 10);
+                        parseInt($textarea.css('paddingBottom'), 10);
             }
 
             function _getHeight($textarea) {
@@ -102,7 +101,7 @@
                         .replace(/</g, '&lt;')
                         .replace(/>/g, '&gt;')
                         .replace(/ /g, '&nbsp;')
-                        .replace(/\n/g, '<br />');
+                        .replace(/\n/g, '<br />') + '<br />';
 
                 if ($textarea.height() !== $(mirror).height() + plusHeight) {
                     return $(mirror).height() + plusHeight;
