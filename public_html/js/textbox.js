@@ -327,6 +327,8 @@
 
                 $this.data('textbox', (data = new TextBox(this, options)));
                 data.refresh(data.state.INIT);
+            } else {
+                $this.data('textbox').refresh();
             }
         });
     }
