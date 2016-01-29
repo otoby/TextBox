@@ -1,10 +1,10 @@
 (function($) {
     var TextBox = function(element, options) {
-        this.$text = $(element);
         this.settings = options;
+        this.$text = $(element);
         this.text = this.$text[0];
-        this.$preview = null;
         this.$textBox = this.$text.closest('.text-box');
+        this.$preview = null;
         this.isPreview = false;
     };
 
@@ -31,8 +31,8 @@
     TextBox.prototype.refresh = function(state) {
         state = state || this.state.REFRESH;
 
-        for (var feature in this.settings) {
-            if (this.settings[feature] && typeof this.Features[feature] === 'function') {
+        for (var feature in this.Features) {
+            if (this.settings[feature]) {
                 this.Features[feature](this, state);
             }
         }
@@ -298,9 +298,13 @@
         },
         replaceArray: function(search, replace, subject) {
             var replaceString = subject;
-            for (var i = 0; i < search.length; i++) {
-                replaceString = replaceString.replace(search[i], replace[i]);
+            var index = 0;
+            var length = search.length;
+
+            for (; index < length; index++) {
+                replaceString = replaceString.replace(search[index], replace[index]);
             }
+
             return replaceString;
         }
     };
