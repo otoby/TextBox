@@ -262,7 +262,7 @@
                 [/\[(.+?)\][ ]*\((\S+?)\)/g, '<a href="{2}">{1}</a>'],
                 [/(\*\*|__)([\S].*?)\1/g, '<strong>{2}</strong>'],
                 [/(\*|_)([\S].*?)\1/g, '<em>{2}</em>'],
-                [/^(#+)[\s]+([^#]*)(\s+#+)?$/g, '<h{1:l}>{1}</h{1:l}>']
+                [/(#+)+([^#\n]*)(\s*#+)?/g, '<h{1:l}>{2}</h{1:l}>']
             ];
             var text0,
                     text1,
@@ -302,6 +302,7 @@
             var length = search.length;
 
             for (; index < length; index++) {
+                replaceString = replaceString.replace(search[index], replace[index]);
                 replaceString = replaceString.replace(search[index], replace[index]);
             }
 
