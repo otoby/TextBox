@@ -6,16 +6,7 @@
         this.$textBox = this.$text.closest('.text-box');
         this.$preview = null;
         this.isPreview = false;
-    };
-
-    TextBox.Defaults = {
-        autoGrow: true,
-        markDown: false,
-        onEdit: null,
-        onPreview: null,
-        content: '<div class="text-box-container"><div class="text-box"><div class="text-box-options"></div></div></div>',
-        hideClass: 'text-box-hide',
-        mirrorClass: 'text-box-textarea-mirror'
+        this.activeFeatures = {};
     };
 
     TextBox.prototype.notify = function(name) {
@@ -31,9 +22,9 @@
     TextBox.prototype.refresh = function(state) {
         state = state || this.state.REFRESH;
 
-        for (var feature in this.Features) {
+        for (var feature in TextBox.Features) {
             if (this.settings[feature]) {
-                this.Features[feature](this, state);
+                this.activeFeatures[feature] = TextBox.Features[feature](this, state);
             }
         }
 
@@ -41,18 +32,16 @@
     };
 
     TextBox.prototype.edit = function() {
-        if (this.$preview) {
-            var markDown = this.Features.markDown(this, this.state.IDLE);
-            markDown.showText();
+        if (this.$preview && this.activeFeatures.markDown) {
+            this.activeFeatures.markDown.showText();
         }
 
         return this;
     };
 
     TextBox.prototype.preview = function() {
-        if (this.$preview) {
-            var markDown = this.Features.markDown(this, this.state.IDLE);
-            markDown.showPreview();
+        if (this.$preview && this.activeFeatures.markDown) {
+            this.activeFeatures.markDown.showPreview();
         }
 
         return this;
@@ -68,7 +57,17 @@
         INIT: 2
     };
 
-    TextBox.prototype.Features = {
+    TextBox.Defaults = {
+        autoGrow: true,
+        markDown: false,
+        onEdit: null,
+        onPreview: null,
+        content: '<div class="text-box-container"><div class="text-box"><div class="text-box-options"></div></div></div>',
+        hideClass: 'text-box-hide',
+        mirrorClass: 'text-box-textarea-mirror'
+    };
+
+    TextBox.Features = {
         autoGrow: function(that, state) {
             var plusHeight = 30; // This is the default Textarea border-bottom for control
             var cssMinHeight = 0;
