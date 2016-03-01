@@ -72,6 +72,7 @@
         autoGrow: function(that, state) {
             var plusHeight = 30; // This is the default Textarea border-bottom for control
             var cssMinHeight = 0;
+            var util = that.Util;
             var mirror;
 
             function _createTextAreaMirror($textarea) {
@@ -103,14 +104,8 @@
             }
 
             function _getHeight($textarea) {
-                mirror.innerHTML = String($textarea.val())
-                        .replace(/&/g, '&amp;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#39;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/ /g, '&nbsp;')
-                        .replace(/\n/g, '<br />') + '<br />';
+
+                mirror.innerHTML = util.htmlEntities(String($textarea.val())) + '<br />';
 
                 var mirrorHeight = $(mirror).height();
 
@@ -295,6 +290,29 @@
         },
         nl2br: function(text) {
             return text.replace(/\n/g, "<br>");
+        },
+        htmlEntities: function(html) {
+
+            if (!html) {
+                return;
+            }
+
+            var escapeMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#x27;',
+                '`': '&#x60;',
+                '\n': '<br />',
+                ' ': '&nbsp;'
+            };
+
+            var source = '(?:' + Object.keys(escapeMap).join('|') + ')';
+            return !(new RegExp(source)).test(html) ? html : html.replace(new RegExp(source, 'g'), function(match) {
+                return escapeMap[match];
+            });
+
         },
         replaceArray: function(search, replace, subject) {
             var replaceString = subject;
