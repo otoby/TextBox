@@ -6,4 +6,6 @@ $(document).ready(function() {
     $('#nbs-textarea-one').textBox();
     $('#nbs-textarea-two').textBox();
     $('#nbs-textarea-three').textBox();
+
+    $('[data-toggle]').popover();
 });
