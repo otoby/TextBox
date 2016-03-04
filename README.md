@@ -1,6 +1,6 @@
 # TextBox
 
-TextBox is a Bootstrap, and jQuery powered textarea.
+TextBox is a jQuery powered textarea.
 
 ## Motive ##
 It is a simple attempt at broadening textarea capability.

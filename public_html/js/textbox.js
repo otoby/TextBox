@@ -335,17 +335,21 @@
             var options = $.extend({}, TextBox.Defaults, $this.data(), typeof option === 'object' && option);
 
             if (!data) {
-                var $formGroup, $content;
-                $formGroup = $this.closest('.form-group');
+                var $parent, $content;
+                $parent = $this.closest('.form-group');
 
-                if ($('.text-box-container', $formGroup).length < 1) {
+                if ($parent.length < 1) {
+                    $parent = $this.closest('div,form');
+                }
+
+                if ($('.text-box-container', $parent).length < 1) {
                     $content = $(TextBox.Defaults.content);
                     $('.text-box', $content).prepend($this);
 
                     var $label = $('<label class="has-error"/>');
                     $label.attr('for', $this.attr('id')).hide();
 
-                    $formGroup.append($content).append($label);
+                    $parent.append($content).append($label);
                 }
 
                 $this.data('textbox', (data = new TextBox(this, options)));
