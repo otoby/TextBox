@@ -63,7 +63,6 @@
     overflow: hidden;
     word-wrap: break-word;
     border:0;
-    border-bottom:solid 30px transparent;
 }
 
 .text-box .text-box-hide,
@@ -81,16 +80,14 @@
 }
 
 .text-box-options {
-    position:absolute;
-    bottom:6px;
-    right:6px;
+    display: block;
+    overflow: hidden;
 }
 
 .text-box-options-item {
     box-sizing: content-box;
     border-radius:3px;
     float:left;
-    height:18px;
     margin-left:4px;
     padding:6px 6px 7px 7px;
 }

@@ -69,7 +69,7 @@
 
     TextBox.Features = {
         autoGrow: function(that, state) {
-            var plusHeight = 30; // This is the default Textarea border-bottom for control
+            var plusHeight = 0;
             var cssMinHeight = 0;
             var util = TextBox.Util;
             var mirror;
