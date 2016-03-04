@@ -181,7 +181,8 @@
                 var selection = getSelection().toString();
                 if (!selection) {
                     that.isPreview = false;
-                    that.$text.removeClass(that.settings.hideClass).focus().keydown().select();
+                    //that.$text.removeClass(that.settings.hideClass).focus().keydown().select();
+                    that.$text.removeClass(that.settings.hideClass).select();
                     that.$preview.addClass(that.settings.hideClass); // Hide
                     that.notify('edit');
                 }
