@@ -20,7 +20,7 @@
     };
 
     TextBox.prototype.refresh = function(state) {
-        state = state || this.state.REFRESH;
+        state = state || TextBox.state.REFRESH;
 
         for (var feature in TextBox.Features) {
             if (this.settings[feature]) {
@@ -51,7 +51,8 @@
         return this.isPreview;
     };
 
-    TextBox.prototype.state = {
+
+    TextBox.state = {
         IDLE: 0,
         REFRESH: 1,
         INIT: 2
@@ -145,14 +146,14 @@
                 window.setTimeout(resize, 0);
             }
 
-            if (state === that.state.INIT) {
+            if (state === TextBox.state.INIT) {
 
                 _createTextAreaMirror(that.$text);
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
 
-            } else if (state === that.state.REFRESH) {
+            } else if (state === TextBox.state.REFRESH) {
 
                 window.setTimeout(function() {
                     if (that.$text.hasClass(that.settings.hideClass)) {
@@ -181,7 +182,6 @@
                 var selection = getSelection().toString();
                 if (!selection) {
                     that.isPreview = false;
-                    //that.$text.removeClass(that.settings.hideClass).focus().keydown().select();
                     that.$text.removeClass(that.settings.hideClass).select();
                     that.$preview.addClass(that.settings.hideClass); // Hide
                     that.notify('edit');
@@ -232,12 +232,12 @@
                 showPreview();
             }
 
-            if (state === that.state.INIT) {
+            if (state === TextBox.state.INIT) {
                 that.$preview = $('<div class="inplace-preview" />');
                 $(that.$preview).insertBefore(that.$text);
 
                 registerTextAndPreviewEvent();
-            } else if (state === that.state.REFRESH) {
+            } else if (state === TextBox.state.REFRESH) {
                 registerTextAndPreviewEvent();
             }
 
@@ -353,7 +353,7 @@
                 }
 
                 $this.data('textbox', (data = new TextBox(this, options)));
-                data.refresh(data.state.INIT);
+                data.refresh(TextBox.state.INIT);
             } else {
                 $this.data('textbox').refresh();
             }
