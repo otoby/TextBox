@@ -70,9 +70,11 @@
 
     TextBox.Features = {
         autoGrow: function(that, state) {
+
+            var util = TextBox.Util;
+
             var plusHeight = 0;
             var cssMinHeight = 0;
-            var util = TextBox.Util;
             var mirror;
 
             function _createTextAreaMirror($textarea) {
@@ -99,11 +101,13 @@
                     mirror.style.fontSize = $textarea.css('font-size');
                     mirror.style.lineHeight = $textarea.css('line-height');
                 }
+            }
 
-                plusHeight += parseInt($textarea.css('paddingTop'), 10) +
-                        parseInt($textarea.css('paddingBottom'), 10);
+            function _updateHeight() {
+                plusHeight += parseInt(that.$text.css('paddingTop'), 10) +
+                        parseInt(that.$text.css('paddingBottom'), 10);
 
-                cssMinHeight += parseInt($textarea.css('min-height'), 10);
+                cssMinHeight += parseInt(that.$text.css('min-height'), 10);
             }
 
             function _getHeight($textarea) {
@@ -152,6 +156,7 @@
             if (state === TextBox.State.INIT) {
 
                 _createTextAreaMirror(that.$text);
+                _updateHeight();
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
@@ -161,11 +166,16 @@
                 window.setTimeout(function() {
                     if (that.$text.hasClass(that.settings.hideClass)) {
                         that.$text.removeClass(that.settings.hideClass);
+
                         _createTextAreaMirror(that.$text);
+                        _updateHeight();
+
                         resize();
                         that.$text.addClass(that.settings.hideClass);
                     } else {
                         _createTextAreaMirror(that.$text);
+                        _updateHeight();
+
                         resize();
                     }
                 }, 0);
