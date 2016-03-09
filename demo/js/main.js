@@ -29,3 +29,16 @@ $(document).ready(function() {
     });
 
 });
+
+function refreshNBSTextBox() {
+    // A refresh occurs if the .data('textbox') has being set in a textarea
+    // This is a transparent functionality
+
+    // 100 refresh
+    var num = 100;
+    while (num-- > 0) {
+        $('#nbs-textarea-one').val('Random data to see the effect of refreshing ONE').textBox();
+        $('#nbs-textarea-two').val('Random data to see the effect of refreshing TWO').textBox();
+        $('#nbs-textarea-three').val('Random data to see the effect of refreshing THREE').textBox();
+    }
+}
