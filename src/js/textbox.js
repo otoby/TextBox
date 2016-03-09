@@ -77,9 +77,12 @@
 
             function _createTextAreaMirror($textarea) {
 
-                if ($textarea.next(that.settings.mirrorClass).length > 0) {
-                    mirror = $textarea.next(that.settings.mirrorClass)[0];
+                var $mirror = $textarea.next('.' + that.settings.mirrorClass);
+
+                if ($mirror.length > 0) {
+                    mirror = $mirror[0];
                 } else {
+
                     $textarea.after('<div class="' + that.settings.mirrorClass + '"></div>');
                     mirror = $textarea.next('.' + that.settings.mirrorClass)[0];
 
