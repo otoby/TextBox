@@ -20,7 +20,7 @@
     };
 
     TextBox.prototype.refresh = function(state) {
-        state = state || TextBox.state.REFRESH;
+        state = state || TextBox.State.REFRESH;
 
         for (var feature in TextBox.Features) {
             if (this.settings[feature]) {
@@ -52,7 +52,7 @@
     };
 
 
-    TextBox.state = {
+    TextBox.State = {
         IDLE: 0,
         REFRESH: 1,
         INIT: 2
@@ -146,14 +146,14 @@
                 window.setTimeout(resize, 0);
             }
 
-            if (state === TextBox.state.INIT) {
+            if (state === TextBox.State.INIT) {
 
                 _createTextAreaMirror(that.$text);
 
                 that.$text.on('keydown', _delayedResize);
                 resize();
 
-            } else if (state === TextBox.state.REFRESH) {
+            } else if (state === TextBox.State.REFRESH) {
 
                 window.setTimeout(function() {
                     if (that.$text.hasClass(that.settings.hideClass)) {
@@ -232,12 +232,12 @@
                 showPreview();
             }
 
-            if (state === TextBox.state.INIT) {
+            if (state === TextBox.State.INIT) {
                 that.$preview = $('<div class="inplace-preview" />');
                 $(that.$preview).insertBefore(that.$text);
 
                 registerTextAndPreviewEvent();
-            } else if (state === TextBox.state.REFRESH) {
+            } else if (state === TextBox.State.REFRESH) {
                 registerTextAndPreviewEvent();
             }
 
@@ -353,7 +353,7 @@
                 }
 
                 $this.data('textbox', (data = new TextBox(this, options)));
-                data.refresh(TextBox.state.INIT);
+                data.refresh(TextBox.State.INIT);
             } else {
                 $this.data('textbox').refresh();
             }
