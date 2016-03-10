@@ -7,6 +7,13 @@
         this.$preview = null;
         this.isPreview = false;
         this.activeFeatures = {};
+
+        // Register for common events like keydown etc
+        this.observer = {
+            keydown: $.Callbacks('unique')
+        };
+
+        this.$text.on('keydown', this.observer.keydown.fire);
     };
 
     TextBox.prototype.notify = function(name) {
@@ -158,7 +165,7 @@
                 _createTextAreaMirror(that.$text);
                 _updateHeight();
 
-                that.$text.on('keydown', _delayedResize);
+                that.observer.keydown.add(_delayedResize);
                 resize();
 
             } else if (state === TextBox.State.REFRESH) {
@@ -217,6 +224,7 @@
                 $('.text-box-options-item', that.$textBox).each(function() {
                     if (this === document.activeElement) {
                         isActive = true;
+                        // jQuery Break
                         return false;
                     }
                 });
