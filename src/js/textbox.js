@@ -30,8 +30,16 @@
         state = state || TextBox.State.REFRESH;
 
         for (var feature in TextBox.Features) {
-            if (this.settings[feature]) {
-                this.activeFeatures[feature] = TextBox.Features[feature](this, state);
+            var val = this.settings[feature];
+            if (typeof val !== 'undefined') {
+                /**
+                 * Feature Setup
+                 * ==========================
+                 * argument 1: TextBox object
+                 * argument 2: Calling State
+                 * argument 3: Represents the true argument of the Feature function
+                 */
+                this.activeFeatures[feature] = TextBox.Features[feature](this, state, val);
             }
         }
 
@@ -67,7 +75,7 @@
 
     TextBox.Defaults = {
         autoGrow: true,
-        markDown: false,
+        markDown: undefined,
         onEdit: null,
         onPreview: null,
         content: '<div class="text-box-container"><div class="text-box"><div class="text-box-options"></div></div></div>',
