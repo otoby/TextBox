@@ -21,21 +21,6 @@
     box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
-/* Styling for bootstrap style error */
-.has-error .text-box-container,
-.has-error .text-box-container:hover,
-.has-error .text-box-container:active,
-.has-error .text-box-container:focus {
-    border-color: #A94442;
-}
-
-.has-error .text-box-container .form-control {
-    border-color: transparent;
-    outline-style:solid;
-    outline-width:0;
-    box-shadow:none;
-}
-
 .text-box {
     position: relative;
 }
@@ -59,7 +44,7 @@
 .text-box textarea:hover,
 .inplace-preview {
     min-height: 75px;
-    padding: 9px 11px 0;
+    padding: 9px 11px;
     overflow: hidden;
     word-wrap: break-word;
     border:0;
@@ -97,6 +82,7 @@
     background-color:#e2e4e6
 }
 
+
 /* Choose your design for the markdown component like button */
 .buttonwrapper {
     -moz-border-radius: 5px;
@@ -118,4 +104,19 @@
 .button a {
     color: #ffffff;
     text-decoration: none;
+}
+
+/* Styling for bootstrap style error */
+.has-error .text-box-container,
+.has-error .text-box-container:hover,
+.has-error .text-box-container:active,
+.has-error .text-box-container:focus {
+    border-color: #A94442;
+}
+
+.has-error .text-box-container .form-control {
+    border-color: transparent;
+    outline-style:solid;
+    outline-width:0;
+    box-shadow:none;
 }
