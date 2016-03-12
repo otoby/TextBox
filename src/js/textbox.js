@@ -9,7 +9,7 @@
         this.activeFeatures = {};
 
         // Register for common events like keydown etc
-        this.observer = {
+        this.events = {
             keydown: $.Callbacks('unique')
         };
 
@@ -35,7 +35,7 @@
                 /**
                  * Feature Setup
                  * ==========================
-                 * argument 1: TextBox object
+                 * argument 1: TextBox object/context
                  * argument 2: Calling State
                  * argument 3: Represents the true argument of the Feature function
                  */
@@ -84,7 +84,7 @@
     };
 
     TextBox.Features = {
-        autoGrow: function(that, state) {
+        autoGrow: function(textbox, state) {
 
             var util = TextBox.Util;
 
@@ -94,14 +94,14 @@
 
             function _createTextAreaMirror($textarea) {
 
-                var $mirror = $textarea.next('.' + that.settings.mirrorClass);
+                var $mirror = $textarea.next('.' + textbox.settings.mirrorClass);
 
                 if ($mirror.length > 0) {
                     mirror = $mirror[0];
                 } else {
 
-                    $textarea.after('<div class="' + that.settings.mirrorClass + '"></div>');
-                    mirror = $textarea.next('.' + that.settings.mirrorClass)[0];
+                    $textarea.after('<div class="' + textbox.settings.mirrorClass + '"></div>');
+                    mirror = $textarea.next('.' + textbox.settings.mirrorClass)[0];
 
                     mirror.style.display = 'none';
                     mirror.style.wordWrap = 'break-word';
@@ -119,10 +119,10 @@
             }
 
             function _updateHeight() {
-                plusHeight += parseInt(that.$text.css('paddingTop'), 10) +
-                        parseInt(that.$text.css('paddingBottom'), 10);
+                plusHeight += parseInt(textbox.$text.css('paddingTop'), 10) +
+                        parseInt(textbox.$text.css('paddingBottom'), 10);
 
-                cssMinHeight += parseInt(that.$text.css('min-height'), 10);
+                cssMinHeight += parseInt(textbox.$text.css('min-height'), 10);
             }
 
             function _getHeight($textarea) {
@@ -141,11 +141,11 @@
             }
 
             function resize() {
-                var height = _getHeight(that.$text);
-                that.text.style.height = height + 'px';
+                var height = _getHeight(textbox.$text);
+                textbox.text.style.height = height + 'px';
 
-                if (that.$preview) {
-                    that.$preview[0].style.minHeight = height + 'px';
+                if (textbox.$preview) {
+                    textbox.$preview[0].style.minHeight = height + 'px';
                 }
             }
 
@@ -170,25 +170,25 @@
 
             if (state === TextBox.State.INIT) {
 
-                _createTextAreaMirror(that.$text);
+                _createTextAreaMirror(textbox.$text);
                 _updateHeight();
 
-                that.observer.keydown.add(_delayedResize);
+                textbox.events.keydown.add(_delayedResize);
                 resize();
 
             } else if (state === TextBox.State.REFRESH) {
 
                 window.setTimeout(function() {
-                    if (that.$text.hasClass(that.settings.hideClass)) {
-                        that.$text.removeClass(that.settings.hideClass);
+                    if (textbox.$text.hasClass(textbox.settings.hideClass)) {
+                        textbox.$text.removeClass(textbox.settings.hideClass);
 
-                        _createTextAreaMirror(that.$text);
+                        _createTextAreaMirror(textbox.$text);
                         _updateHeight();
 
                         resize();
-                        that.$text.addClass(that.settings.hideClass);
+                        textbox.$text.addClass(textbox.settings.hideClass);
                     } else {
-                        _createTextAreaMirror(that.$text);
+                        _createTextAreaMirror(textbox.$text);
                         _updateHeight();
 
                         resize();
@@ -202,34 +202,34 @@
             };
 
         },
-        markDown: function(that, state) {
+        markDown: function(textbox, state) {
 
             var util = TextBox.Util;
 
             function showText() {
                 var selection = getSelection().toString();
                 if (!selection) {
-                    that.isPreview = false;
-                    that.$text.removeClass(that.settings.hideClass).select();
-                    that.$preview.addClass(that.settings.hideClass); // Hide
-                    that.notify('edit');
+                    textbox.isPreview = false;
+                    textbox.$text.removeClass(textbox.settings.hideClass).select();
+                    textbox.$preview.addClass(textbox.settings.hideClass); // Hide
+                    textbox.notify('edit');
                 }
             }
 
             function showPreview() {
-                var html = util.textToMarkDownHtml(that.$text.val());
+                var html = util.textToMarkDownHtml(textbox.$text.val());
                 var value = util.nl2br(html);
-                that.isPreview = true;
-                that.$preview.removeClass(that.settings.hideClass); //Show
-                that.$preview.html(value);
-                that.$text.addClass(that.settings.hideClass);
-                that.notify('preview');
+                textbox.isPreview = true;
+                textbox.$preview.removeClass(textbox.settings.hideClass); //Show
+                textbox.$preview.html(value);
+                textbox.$text.addClass(textbox.settings.hideClass);
+                textbox.notify('preview');
             }
 
             function isTextBoxActive() {
                 var isActive = false;
 
-                $('.text-box-options-item', that.$textBox).each(function() {
+                $('.text-box-options-item', textbox.$textBox).each(function() {
                     if (this === document.activeElement) {
                         isActive = true;
                         // jQuery Break
@@ -237,7 +237,7 @@
                     }
                 });
 
-                if (!isActive && that.text === document.activeElement) {
+                if (!isActive && textbox.text === document.activeElement) {
                     isActive = true;
                 }
 
@@ -253,17 +253,17 @@
             }
 
             function registerTextAndPreviewEvent() {
-                that.$preview.off('click')
+                textbox.$preview.off('click')
                         .on('click', showText);
 
-                that.$textBox.on('focusout', delayedShowPreview);
+                textbox.$textBox.on('focusout', delayedShowPreview);
 
                 showPreview();
             }
 
             if (state === TextBox.State.INIT) {
-                that.$preview = $('<div class="inplace-preview" />');
-                $(that.$preview).insertBefore(that.$text);
+                textbox.$preview = $('<div class="inplace-preview" />');
+                $(textbox.$preview).insertBefore(textbox.$text);
 
                 registerTextAndPreviewEvent();
             } else if (state === TextBox.State.REFRESH) {
